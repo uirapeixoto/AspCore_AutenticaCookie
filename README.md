@@ -1,0 +1,1 @@
+# AspCore_AutenticaCookie
