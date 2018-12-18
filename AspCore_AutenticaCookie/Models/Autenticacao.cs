@@ -24,7 +24,7 @@ namespace AspCore_AutenticaCookie.Models
             string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
             return connectionString;
         }
-        public string RegistrarUsuario(Usuario usuario)
+        public string RegistrarUsuario(UsuarioViewModel usuario)
         {
             using (SqlConnection con = new SqlConnection(GetConnectionString()))
             {
@@ -41,13 +41,14 @@ namespace AspCore_AutenticaCookie.Models
             }
         }
 
-        public string ValidarLogin(Usuario usuario)
+        public string ValidarLogin(UsuarioViewModel usuario)
         {
             using (SqlConnection con = new SqlConnection(GetConnectionString()))
             {
-                SqlCommand cmd = new SqlCommand("ValidarLogin", con);
+                SqlCommand cmd = new SqlCommand("ValidarUsuario", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Login", usuario.Login);
+                cmd.Parameters.AddWithValue("@Email", usuario.Email);
                 cmd.Parameters.AddWithValue("@Senha", usuario.Senha);
                 con.Open();
                 string resultado = cmd.ExecuteScalar().ToString();

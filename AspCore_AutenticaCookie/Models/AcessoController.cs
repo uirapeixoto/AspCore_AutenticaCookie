@@ -26,11 +26,13 @@ namespace AspCore_AutenticaCookie.Models
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([Bind] Usuario usuario)
+        public async Task<IActionResult> Login([Bind] UsuarioViewModel usuario)
         {
 
             ModelState.Remove("Nome");
             ModelState.Remove("Email");
+            ModelState.Remove("Email");
+
             if (ModelState.IsValid)
             {
                 string LoginStatus = _autentica.ValidarLogin(usuario);
@@ -47,13 +49,13 @@ namespace AspCore_AutenticaCookie.Models
                         return RedirectToAction("UsuarioHome", "Usuario");
                     else
                     {
-                        TempData["LoginUsuarioFalhou"] = "O login Falhou. Informe as credenciais corretas " + User.Identity.Name;
+                        TempData["Falhou"] = "O login falhou. Informe as credenciais corretas " + User.Identity.Name;
                         return RedirectToAction("LoginUsuario", "Login");
                     }
                 }
                 else
                 {
-                    TempData["LoginUsuarioFalhou"] = "O login Falhou. Informe as credenciais corretas";
+                    TempData["Falhou"] = "O login falhou. Informe as credenciais corretas";
                     return View();
                 }
             }
@@ -69,7 +71,7 @@ namespace AspCore_AutenticaCookie.Models
         }
 
         [HttpPost]
-        public IActionResult RegistrarUsuario([Bind] Usuario usuario)
+        public IActionResult RegistrarUsuario([Bind] UsuarioViewModel usuario)
         {
             if (ModelState.IsValid)
             {
