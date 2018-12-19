@@ -10,17 +10,17 @@ namespace AspCore_AutenticaCookie.Controllers
 {
 
     [Authorize]
-    public class UsuarioHomeController : Controller
+    public class ClienteController : BaseController
     {
         public IActionResult Index()
         {
             return View();
         }
 
-        public async Task<IActionResult> Logout()
+        public IActionResult Home()
         {
-            await HttpContext.SignOutAsync();
-            return RedirectToAction("UsuarioLogin", "Login");
+            return View();
         }
+
     }
 }

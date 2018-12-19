@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using AspCore_AutenticaCookie.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
-namespace AspCore_AutenticaCookie.Models
+namespace AspCore_AutenticaCookie.Controllers
 {
     public class AcessoController : Controller
     {
@@ -21,6 +20,7 @@ namespace AspCore_AutenticaCookie.Models
 
         public IActionResult Login()
         {
+            TempData["Registro"] = false;
             return View();
         }
 
@@ -31,7 +31,7 @@ namespace AspCore_AutenticaCookie.Models
 
             ModelState.Remove("Nome");
             ModelState.Remove("Email");
-            ModelState.Remove("Email");
+            ModelState.Remove("Login");
 
             if (ModelState.IsValid)
             {
@@ -46,11 +46,11 @@ namespace AspCore_AutenticaCookie.Models
                     ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
                     await HttpContext.SignInAsync(principal);
                     if (User.Identity.IsAuthenticated)
-                        return RedirectToAction("UsuarioHome", "Usuario");
+                        return RedirectToAction("Home", "Cliente");
                     else
                     {
                         TempData["Falhou"] = "O login falhou. Informe as credenciais corretas " + User.Identity.Name;
-                        return RedirectToAction("LoginUsuario", "Login");
+                        return View();
                     }
                 }
                 else
@@ -61,13 +61,9 @@ namespace AspCore_AutenticaCookie.Models
             }
             else
             {
+                TempData["Registro"] = false;
                 return View();
             }
-        }
-
-        public IActionResult RegistrarUsuario()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -80,14 +76,15 @@ namespace AspCore_AutenticaCookie.Models
                 {
                     ModelState.Clear();
                     TempData["Sucesso"] = "Registro realizado com sucesso!";
+                    TempData["Registro"] = false;
                 }
                 else
                 {
                     TempData["Falhou"] = "O Registro do usuário falhou";
                 }
+                TempData["Registro"] = true;
             }
             return View();
         }
-
     }
 }
