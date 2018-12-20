@@ -1,9 +1,7 @@
 ﻿using AspCore_AutenticaCookie.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace AspCore_AutenticaCookie.Controllers
 {
@@ -26,7 +24,7 @@ namespace AspCore_AutenticaCookie.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([Bind] UsuarioViewModel usuario)
+        public IActionResult Login([Bind] UsuarioViewModel usuario)
         {
 
             ModelState.Remove("Nome");
@@ -44,7 +42,7 @@ namespace AspCore_AutenticaCookie.Controllers
                     };
                     ClaimsIdentity userIdentity = new ClaimsIdentity(claims, "login");
                     ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                    await HttpContext.SignInAsync(principal);
+                    
                     if (User.Identity.IsAuthenticated)
                         return RedirectToAction("Home", "Cliente");
                     else

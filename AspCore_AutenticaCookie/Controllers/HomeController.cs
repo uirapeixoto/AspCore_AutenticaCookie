@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AspCore_AutenticaCookie.Models;
 using Microsoft.AspNetCore.Mvc;
-using AspCore_AutenticaCookie.Models;
+using System.Diagnostics;
 
 namespace AspCore_AutenticaCookie.Controllers
 {
